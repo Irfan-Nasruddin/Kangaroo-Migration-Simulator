@@ -5,9 +5,8 @@ import java.util.Scanner;
 // 2. What if the colonization threshold is bigger than the kangaroo limit of all the points
 // 3. The input function needs to be prettier
 // 4. The method names need to be more descriptive and concise
-// 5. The constansts need to be collected
-// 6. Gotta test more
-// 7. Gotta add more extra features
+// 5. Gotta test more
+// 6. Gotta add more extra features
 public class JumpyGrof 
 {
     // colonyMin is global because methods cannot return 2 things!!!
