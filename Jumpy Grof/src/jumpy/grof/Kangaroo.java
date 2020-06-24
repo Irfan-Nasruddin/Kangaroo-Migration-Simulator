@@ -22,29 +22,30 @@ public class Kangaroo
             this.gender = "female";
     }
     
-    // The value will be used to set the heurisic of the link
+    // The value will be used to set the heuristic of the link
+    // The offering for each kangaroo is 0.5 food
     public int canOvercome(Link link)
     {
         if(link.getPoint().isColonized())
         {
-            int placeholder = this.food - (link.getObstacle() + this.food/2 + link.getPoint().getPointCapacity()/2);
-            if(placeholder >= 0)
-                return placeholder + link.getPoint().getFemales();
+            int baseHeuristic = this.food - (link.getObstacle() + this.food/2 + link.getPoint().getPointCapacity()/2);
+            if(baseHeuristic >= 0)
+                return baseHeuristic + link.getPoint().getFoodEnum() + link.getPoint().getFemales();
             else 
-                return placeholder;
+                return baseHeuristic;
         }
         else
         {
-            int placeholder = this.food - (link.getObstacle() + this.food/2);
-            if(placeholder >= 0)
-                return placeholder + link.getPoint().getFemales();
+            int baseHeuristic = this.food - (link.getObstacle() + this.food/2);
+            if(baseHeuristic >= 0)
+                return baseHeuristic + link.getPoint().getFoodEnum() + link.getPoint().getFemales();
             else
-                return placeholder;
+                return baseHeuristic;
             
         }
     }
     
-    // This method is used for updating things when there is dt (for now its empty cuz I dont know what to do with it) (DONE)
+    // This method is used to update the kangaroo and the point (DONE)
     public void update(Link link)
     {
         // Consume the food 
@@ -74,14 +75,6 @@ public class Kangaroo
     // Setter and getter for food (DONE)
     public void setFood(int food) {this.food = food;}
     public int getFood() {return this.food;}
-    
-    // Check if the pouch is full (DONE)
-    public boolean isFull() 
-    {
-        if(this.food > this.maxFoodCapacity)
-            throw new Error("This kangaroo exceeded its maximum food capacity");
-        return this.food == this.maxFoodCapacity;
-    }
     
     // toString (DONE)
     @Override
