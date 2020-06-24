@@ -84,8 +84,8 @@ public class Map
     public String toString()
     {
         String result = "";
-        for(int i = 0; i < points.size(); i++) 
-            result += "Point " + (i + 1) + ": \n" + points.get(i).toString() + "\n";
+        for(int i = 0; i < this.points.size(); i++) 
+            result += "Point " + (i + 1) + ": \n" + this.points.get(i).toString() + "\n";
         return result;
     }
     
