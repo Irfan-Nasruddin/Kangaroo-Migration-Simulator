@@ -1,12 +1,5 @@
 package jumpy.grof;
 import java.util.Scanner;
-// Concerns
-// 1. Is the heuristic evaluation correct according to the fucking question
-// 2. What if the colonization threshold is bigger than the kangaroo limit of all the points
-// 3. The input function needs to be prettier
-// 4. The method names need to be more descriptive and concise
-// 5. Gotta test more
-// 6. Gotta add more extra features
 public class JumpyGrof 
 {
     // colonyMin is global because methods cannot return 2 things!!!
@@ -45,7 +38,7 @@ public class JumpyGrof
     // Check if string is a number (regression is nice) (DONE)
     public static boolean isNumber(String string) {return string.matches("^\\d+$");}
     
-    // Abstract away the input mechanism (it is ugly as heck but it gets the job done which is good enough)
+    // Abstract away the input mechanism (DONE)
     public static Point[] getInput()
     {
         // Variables
@@ -131,7 +124,8 @@ public class JumpyGrof
                     break;
             }
             colonyMin = Integer.parseInt(input);
-        }
+        }  
+        SCAN.close();
         return points;
     }
     
