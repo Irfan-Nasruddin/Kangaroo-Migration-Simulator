@@ -15,10 +15,10 @@ public class Point
     public Point()
     {
         // Give this point an id between 0 and 1000 just to be safe that there is no point with the same id
-        // The random number of food for each point is between 5 and 25
+        // The random number of food for each point is between 5 and 20
         // The random kangaroo limit of each point is between 5 and 12
         // The random number of link for each point is between 2 and 7
-       this(RAND.nextInt(1001), 5 + RAND.nextInt(21), 5 + RAND.nextInt(8), 2 + RAND.nextInt(6));
+       this(RAND.nextInt(1001), 5 + RAND.nextInt(16), 5 + RAND.nextInt(8), 2 + RAND.nextInt(6));
     }
     public Point(int id, int foodEnum, int maxKangarooCapacity, int linkLimit)
     {
@@ -51,11 +51,11 @@ public class Point
         if(this.links.size() < this.linkLimit)
             this.links.add(new Link(that));
         else
-            throw new Error("You exceeded the link limit the point " + this.id);
+            throw new Error("You exceeded the link limit of the point " + this.id);
     }
     
     // Update the point (false; no movement, tue; movement) (DONE)
-    public boolean update( int colonizationThreshold)
+    public boolean update(int colonizationThreshold)
     {
         // flag to check whether there is any movement (assume initially there is no movement)
         boolean hasMoved = false;
@@ -64,19 +64,20 @@ public class Point
         if(this.kangaroos.size() >= colonizationThreshold) 
             this.colonized = true;
         
-        // If this point is already colonized or there is no kangaroo at this point return this links else undo the earlier action + error checking
-        if(this.colonized || this.kangaroos.size() <= 0) 
+        // If this point is already colonized or there is no kangaroo
+        if(this.colonized) 
             return hasMoved;
         
-        // For each kangaroo that is going to migrate between 1 and half of the kangaroos
-        int migratingNumber = (this.kangaroos.size() == 1) ? 1 : this.kangaroos.size()/2;
+        // For each kangaroo that is going to migrate between 1 and a third of the kangaroos
+        // A third of the kangaroos because I want to ensure that there are a few kangaroos that decide to stay for whatever reason
+        int migratingNumber = (this.kangaroos.size() == 1) ? 1 : this.kangaroos.size() * 1/3;
         for(; migratingNumber > 0; migratingNumber--)
         {
             // The kangaroo that is going to or not, migrate
             Kangaroo kangaroo = this.kangaroos.get(RAND.nextInt(this.kangaroos.size()));
-            
+
             // Set and sort the links based on the heuristic
-            this.setAndSortLink(kangaroo);
+            this.setAndSortLinks(kangaroo);
             
             // For each link
             for(int i = 0; i < this.links.size(); i++)
@@ -129,7 +130,7 @@ public class Point
         return this.kangaroos.size() == this.maxKangarooCapacity;
     }
     
-    // Getter and setter for foodEnum
+    // Getter and setter for foodEnum (DONE)
     public int getFoodEnum()
     {
         return this.foodEnum;
@@ -153,7 +154,7 @@ public class Point
         return this.links.size() == this.linkLimit;
     }
     
-    // toString (note that the number of kangaroos and the number of connections must not exceed the limit when checking the output) (DONE)
+    // toString (DONE)
     @Override
     public String toString()
     {
@@ -161,7 +162,6 @@ public class Point
         result += "ID: " + id + "\n";
         result += "Food: " + foodEnum + "\n";
         result += "Kangaroo limit: " + maxKangarooCapacity + "\n";
-//        result += "Max number of links: " + linkLimit + "\n";
         result += "Number of male kangaroos: " + (this.kangaroos.size() - this.females) + "\n";
         result += "Number of female kangaroos: " + this.females + "\n";
         result += "This point is connected to: " + this.links.toString() + "\n";
@@ -170,10 +170,10 @@ public class Point
     }
 
     // Helper methods 
-    /*---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+    /*------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 
     // Set the temporary heuristic of the points to this kangaroo (DONE)
-    private void setAndSortLink(Kangaroo kangaroo)
+    private void setAndSortLinks(Kangaroo kangaroo)
     {
         // Set each links 
         for(int i = 0; i < this.links.size(); i++)
