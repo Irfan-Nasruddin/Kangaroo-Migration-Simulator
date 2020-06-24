@@ -47,10 +47,10 @@ public class Map
         // Link the points together 
         for(int i = 0; i < this.points.size(); i++)
             for(int j = 0; j < this.points.size(); j++)
-                if(this.points.get(i).linkIsFull() == false && this.points.get(i).equals(this.points.get(j)) == false)
-                    this.points.get(i).makeLink(this.points.get(j % this.points.size()));
-                else if(this.points.get(i).linkIsFull() == true)
+                if(this.points.get(i).linkIsFull() == true)
                     break;
+                else if(this.points.get(i).equals(this.points.get(j % this.points.size())) == false)
+                    this.points.get(i).makeLink(this.points.get(j % this.points.size()));
     }
 
     // Recursive method that stop when there is no change (DONE)
@@ -68,7 +68,7 @@ public class Map
             for(int i = points.size() - 1; i >= 0; i--)
                 this.counter.add(points.get(i).update(this.colonizationThreshold));
         
-        // Check if there is no movement
+        // Check if there is movement
         if(this.counter.contains(true))
             this.update();
     }
