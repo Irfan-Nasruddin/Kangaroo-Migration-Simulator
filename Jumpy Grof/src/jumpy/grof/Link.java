@@ -26,7 +26,6 @@ public class Link implements Comparable<Link>
 
     // Setter and getter for obstacle (DONE)
     public int getObstacle() {return this.obstacle;}
-    public void setObstacle(int obstacle) {this.obstacle = obstacle;}
     
     // Set and get the heuristic value (bigger value is better) (DONE)
     public double getHeuristic() {return this.heuristic;}
