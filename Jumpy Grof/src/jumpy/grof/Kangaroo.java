@@ -9,17 +9,20 @@ public class Kangaroo
     // All kangaroo will be randomly generated just like life with genetics which is unfair
     public Kangaroo()
     {
-        // Their maximum food capacity is between 5 to 12
-        this.maxFoodCapacity = 5 + RAND.nextInt(8);
-        
+        // The random maximum food capacity is between 5 and 12
+        // 60% to be male 40% to be female
+        this(5 + RAND.nextInt(8), (RAND.nextInt(100) <= 60) ? "male" : "female");
+    }
+    public Kangaroo(int maxFoodCapacity, String gender)
+    {
+        // Assign the given maximum food capacity
+        this.maxFoodCapacity = maxFoodCapacity;
+
         // All kangaroo will have 5 to max food capacity food initailly
         this.food = 5 + this.RAND.nextInt(this.maxFoodCapacity - 4);
-        
-        // 60% to be male 40% to be female
-        if(RAND.nextInt(101) <= 60) 
-            this.gender = "male";
-        else 
-            this.gender = "female";
+
+        // Assign the given gender 
+        this.gender = gender;
     }
     
     // The value will be used to set the heuristic of the link
