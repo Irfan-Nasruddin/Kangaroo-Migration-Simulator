@@ -8,6 +8,7 @@ public class Point
     private static final Random RAND = new Random();
     private ArrayList<Kangaroo> kangaroos = new ArrayList<>();
     private ArrayList<Link> links = new ArrayList<>();
+    private ArrayList<Integer> pointIDSpecified = null;
     private int id, foodEnum, maxKangarooCapacity, linkLimit, females = 0;
     private boolean colonized = false;
     
@@ -18,9 +19,9 @@ public class Point
         // The random number of food for each point is between 5 and 20
         // The random kangaroo limit of each point is between 5 and 12
         // The random number of link for each point is between 2 and 7
-       this(RAND.nextInt(1001), 5 + RAND.nextInt(16), 5 + RAND.nextInt(8), 2 + RAND.nextInt(6));
+       this(RAND.nextInt(1001), 5 + RAND.nextInt(16), 5 + RAND.nextInt(8), 2 + RAND.nextInt(6), new ArrayList<Kangaroo>(), new ArrayList<Integer>());
     }
-    public Point(int id, int foodEnum, int maxKangarooCapacity, int linkLimit)
+    public Point(int id, int foodEnum, int maxKangarooCapacity, int linkLimit, ArrayList<Kangaroo> kangaroos, ArrayList<Integer> pointsID)
     {
         // ID assignment
         this.id = id;
@@ -30,19 +31,39 @@ public class Point
         
         // maxCapacity assignment
         this.maxKangarooCapacity = maxKangarooCapacity;
-        
-        // Initial number of kangaroo is between 1 to 3/5 of the maximum number of kangaroo allowed
-        int size = (this.maxKangarooCapacity > 1) ? 2 + RAND.nextInt(this.maxKangarooCapacity * 3/5) : this.maxKangarooCapacity;
-        for(int i = 0; i < size; i++)
-        {
-            Kangaroo kangaroo = new Kangaroo();
-            if(kangaroo.getGender().equals("female")) 
-                this.females++;
-            this.kangaroos.add(kangaroo);
-        }
-        
+
         // Assign the link limit
         this.linkLimit = linkLimit;
+        
+        // If the kangaroos arrayList is empty
+        if(kangaroos.size() == 0)
+        {
+            // Initial number of kangaroo is between 1 to 3/5 of the maximum number of kangaroo allowed
+            int size = (this.maxKangarooCapacity > 1) ? 2 + RAND.nextInt(this.maxKangarooCapacity * 3/5) : this.maxKangarooCapacity;
+            for(int i = 0; i < size; i++)
+            {
+                Kangaroo kangaroo = new Kangaroo();
+                if(kangaroo.getGender().equals("female")) 
+                    this.females++;
+                this.kangaroos.add(kangaroo);
+            }
+        }
+        // If the user set the kangaroos for the point
+        else
+        {
+            this.kangaroos = kangaroos;
+            for(int i = 0; i < this.kangaroos.size(); i++)
+                if(this.kangaroos.get(i).getGender().equals("female"))
+                    this.females++;
+        }
+
+        // Make sure it doesn't have id of this point to avoid linking to itself
+        for(int i = 0; i < pointsID.size(); i++)
+            if(pointsID.get(i).equals(this.id))
+                pointsID.remove(i);
+
+        // Just assign the value of the points
+        this.pointIDSpecified = pointsID;
     }
     
     // Establish link to the point (DONE)
@@ -54,10 +75,21 @@ public class Point
             throw new Error("You exceeded the link limit of the point " + this.id);
     }
     
+    // Check if the user specified any ID for the connection (DONE)
+    public boolean haveSpecifiedID()
+    {
+        return this.pointIDSpecified.size() >= 0;
+    }
+    // Check whether a connection has already been established with the point (DONE)
+    public boolean containSpecifiedID(Point that)
+    {
+        return this.pointIDSpecified.contains(that.id);
+    }
+    
     // Update the point (false; no movement, tue; movement) (DONE)
     public boolean update(int colonizationThreshold)
     {
-        // flag to check whether there is any movement (assume initially there is no movement)
+        // Flag to check whether there is any movement (assume initially there is no movement)
         boolean hasMoved = false;
         
         // See if this point is colonized
@@ -65,12 +97,12 @@ public class Point
             this.colonized = true;
         
         // If this point is already colonized or there is no kangaroo
-        if(this.colonized) 
+        if(this.colonized || this.kangaroos.size() == 0) 
             return hasMoved;
         
-        // For each kangaroo that is going to migrate between 1 and a third of the kangaroos
+        // For each kangaroo that is going to migrate between 1 and 2 fifth of the kangaroos
         // A third of the kangaroos because I want to ensure that there are a few kangaroos that decide to stay for whatever reason
-        int migratingNumber = (this.kangaroos.size() == 1) ? 1 : this.kangaroos.size() * 1/3;
+        int migratingNumber = (this.kangaroos.size() == 1) ? 1 : this.kangaroos.size() * 2/5;
         for(; migratingNumber > 0; migratingNumber--)
         {
             // The kangaroo that is going to or not, migrate
@@ -82,10 +114,10 @@ public class Point
             // For each link
             for(int i = 0; i < this.links.size(); i++)
             {
-                // If the heuristic value is less than 0 then it cannot traverse through it
-                if((int)this.links.get(i).getHeuristic() < 0)
+                // If the heuristic value is less than 0 or this point is better then it won't traverse through 
+                if((int)this.links.get(i).getHeuristic() < 0 || this.foodEnum * 1/4 + this.females >= links.get(i).getHeuristic())
                     break;
-                
+
                 // If the point is not full
                 if(links.get(i).getPoint().isFull() == false)
                 {
@@ -164,6 +196,7 @@ public class Point
         result += "Kangaroo limit: " + maxKangarooCapacity + "\n";
         result += "Number of male kangaroos: " + (this.kangaroos.size() - this.females) + "\n";
         result += "Number of female kangaroos: " + this.females + "\n";
+        result += "Connection limit: " + this.linkLimit + "\n";
         result += "This point is connected to: " + this.links.toString() + "\n";
         result += "Colonized: " + this.colonized + "\n";
         return result;
