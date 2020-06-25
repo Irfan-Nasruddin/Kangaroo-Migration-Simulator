@@ -11,11 +11,18 @@ public class Link implements Comparable<Link>
     // Constructor (DONE)
     public Link(Point point) 
     {
+        this(point, -69);
+    }
+    public Link(Point point, int obstacle)
+    {
         // Assign the given point 
         this.point = point;
         
         // Set the obstacle to a random value between 1 and 6
-        this.obstacle = 1 + RAND.nextInt(6);
+        if(obstacle == -69)
+            this.obstacle = 1 + RAND.nextInt(6);
+        else
+            this.obstacle = obstacle;
         
         //Initalize the heuristic value
         this.heuristic = 0;
