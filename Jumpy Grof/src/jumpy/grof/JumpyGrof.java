@@ -1,4 +1,5 @@
 package jumpy.grof;
+import java.util.ArrayList;
 import java.util.Scanner;
 public class JumpyGrof 
 {
@@ -98,6 +99,34 @@ public class JumpyGrof
                 }
                 data[2] = Integer.parseInt(input);
 
+                // This is for the individual kangaroos(if bad input, stop)
+                ArrayList<Kangaroo> kangaroos = new ArrayList<>();
+                for(int j = 0; j < data[2]; j++)
+                {
+                    System.out.println("    Kangaroo " + (j + 1));
+
+                    // If the gender of the kangaroo is neither f or m, stop 
+                    System.out.print("    Gender: ");
+                    String gender = SCAN.next();
+                    if(gender.toLowerCase().equals("f") == false && gender.toLowerCase().equals("m") == false)
+                        break;
+
+                    // If the pouch maximum capacity is less than 5 or not a number, stop
+                    System.out.print("    Pouch maximum capacity(>=5): ");
+                    String capacity = SCAN.next();
+                    if(isNumber(capacity) == false || Integer.parseInt(capacity) < 5)
+                        break;
+
+                    // Classify the gender
+                    if(gender.equals("f"))
+                        gender = "female";
+                    else 
+                        gender = "male";
+
+                    // Put the kangaroo into the kangaroos arrayList
+                    kangaroos.add(new Kangaroo(Integer.parseInt(capacity), gender));
+                }
+
                 // Get the number of connection of each point
                 while(true)
                 {
@@ -108,11 +137,26 @@ public class JumpyGrof
                 }
                 data[3] = Integer.parseInt(input);
 
+                // This is for the individual connections
+                ArrayList<Integer> connectedPointIDs = new ArrayList<>();
+                for(int j = 0; j < data[3]; j++)
+                {
+                    // Get the id
+                    System.out.print("    Link " + (j + 1) + " ID: ");
+                    String id = SCAN.next();
+
+                    // If the id is not a number, stop
+                    if(isNumber(id) == false)
+                        break;
+                    else
+                        connectedPointIDs.add(Integer.parseInt(id));
+                }
+
                 // Insert newline in between points
                 System.out.println("");
                 
                 // Insert the data into the points array
-                points[i] = new Point(data[0], data[1], data[2], data[3]);
+                points[i] = new Point(data[0], data[1], data[2], data[3], kangaroos, connectedPointIDs);
             }
 
             // Get minimum number to form colony
