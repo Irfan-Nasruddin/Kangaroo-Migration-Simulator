@@ -29,16 +29,25 @@ public class Link implements Comparable<Link>
     }
     
     // Setter and getter for point (DONE)
-    public Point getPoint() {return this.point;}
+    public Point getPoint() 
+    {
+        return this.point;
+    }
 
     // Setter and getter for obstacle (DONE)
-    public int getObstacle() {return this.obstacle;}
+    public int getObstacle() 
+    {
+        return this.obstacle;
+    }
     
     // Set and get the heuristic value (bigger value is better) (DONE)
-    public double getHeuristic() {return this.heuristic;}
+    public double getHeuristic() 
+    {
+        return this.heuristic;
+    }
     public void setHeuristic(Kangaroo kangaroo)
     {
-        this.heuristic = kangaroo.canOvercome(this);
+        this.heuristic = kangaroo.calculateHeuristic(this);
     }
     
     // String format (DONE)
