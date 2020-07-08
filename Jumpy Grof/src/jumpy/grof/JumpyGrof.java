@@ -37,7 +37,10 @@ public class JumpyGrof
     }
     
     // Check if string is a number (regression is nice) (DONE)
-    public static boolean isNumber(String string) {return string.matches("^\\d+$");}
+    public static boolean isNumber(String string) 
+    {
+        return string.matches("^\\d+$");
+    }
     
     // Abstract away the input mechanism (DONE)
     public static Point[] getInput()
@@ -50,14 +53,14 @@ public class JumpyGrof
         // Determine to randomize input  or to get input from user
         System.out.print("Do you wish to set the wild life environment: ");
         input = SCAN.next();
-        if(input.equals("yes") || input.equals("y") || input.equals("1") || input.equals("sure man why not"))
+        if(input.toLowerCase().equals("yes") || input.equals("y") || input.equals("1") || input.equals("sure man why not"))
         {
             // Get the number of points
             while(true)
             {
                 System.out.print("Number of Points (2 - 20): ");
                 input = SCAN.next();
-                if(isNumber(input) && Integer.parseInt(input) <= 20 && Integer.parseInt(input) >= 2)
+                if(isNumber(input) && Integer.parseInt(input) >= 2 && Integer.parseInt(input) <= 20 )
                     break;
             }
 
@@ -82,7 +85,7 @@ public class JumpyGrof
                 // Get the number of food of each point
                 while(true)
                 {
-                    System.out.print((i + 1) + ". food (>= 1): ");
+                    System.out.print((i + 1) + ". food (>=1): ");
                     input = SCAN.next();
                     if(isNumber(input) && Integer.parseInt(input) >= 1) 
                         break;
