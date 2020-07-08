@@ -27,25 +27,19 @@ public class Kangaroo
     
     // The value will be used to set the heuristic of the link
     // The offering for each kangaroo is 0.5 food
-    public int canOvercome(Link link)
+    public int calculateHeuristic(Link link)
     {
-        if(link.getPoint().isColonized())
-        {
-            int baseHeuristic = this.food - (link.getObstacle() + this.food/2 + link.getPoint().getPointCapacity()/2);
-            if(baseHeuristic >= 0)
-                return baseHeuristic + link.getPoint().getFoodEnum() + link.getPoint().getFemales();
-            else 
-                return baseHeuristic;
-        }
-        else
-        {
-            int baseHeuristic = this.food - (link.getObstacle() + this.food/2);
-            if(baseHeuristic >= 0)
-                return baseHeuristic + link.getPoint().getFoodEnum() + link.getPoint().getFemales();
-            else
-                return baseHeuristic;
-            
-        }
+        // If the point is colonized set the offering to half the number of kangaroos, else set it to 0
+        int offerings = (link.getPoint().isColonized()) ? link.getPoint().getKangarooCount()/2 : 0;
+
+        // Set the base heuristic
+        int baseHeuristic = this.food - (link.getObstacle() + this.food/2 + offerings);
+
+        // If the baseHeuristic is < 0, then the kangaroo cant go past through the link, else finalHeuristic = baseHeuristic + food + females
+        if(baseHeuristic >= 0)
+            return baseHeuristic + link.getPoint().getFoodEnum() + link.getPoint().getFemales();
+        else 
+            return baseHeuristic;
     }
     
     // This method is used to update the kangaroo and the point (DONE)
@@ -53,7 +47,7 @@ public class Kangaroo
     {
         // Consume the food 
         if(link.getPoint().isColonized())
-            this.food -= (link.getObstacle() + this.food/2 + link.getPoint().getPointCapacity()/2);
+            this.food -= (link.getObstacle() + this.food/2 + link.getPoint().getKangarooCount()/2);
         else
             this.food -= (link.getObstacle() + this.food/2);
         
@@ -76,8 +70,14 @@ public class Kangaroo
     public String getGender() {return this.gender;}
     
     // Setter and getter for food (DONE)
-    public void setFood(int food) {this.food = food;}
-    public int getFood() {return this.food;}
+    public void setFood(int food) 
+    {
+        this.food = food;
+    }
+    public int getFood() 
+    {
+        return this.food;
+    }
     
     // toString (DONE)
     @Override
