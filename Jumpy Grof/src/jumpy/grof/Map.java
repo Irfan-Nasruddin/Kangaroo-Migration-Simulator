@@ -7,8 +7,8 @@ public class Map
     // Variables
     private final Random RAND = new Random();
     private ArrayList<Point> points = new ArrayList<>();
-    private int colonizationThreshold;
     private ArrayList<Boolean> counter = new ArrayList<>();
+    private int colonizationThreshold;
 
     // Constructor (DONE)
     public Map() 
@@ -36,6 +36,7 @@ public class Map
                 // Add the point to the list
                 this.points.add(point);
             }
+            
             // The random colonization threshold is between 6 and 12 & a more deterministic colonizationThreshold value
             // Six is a crowd
             this.colonizationThreshold = Math.min(6 + RAND.nextInt(7), getKangarooCount()/this.points.size() + 5);
@@ -109,7 +110,7 @@ public class Map
     {
         int sum = 0;
         for(int i = 0; i < this.points.size(); i++)
-            sum += this.points.get(i).getPointCapacity();
+            sum += this.points.get(i).getKangarooCount();
         return sum;
     }
 
