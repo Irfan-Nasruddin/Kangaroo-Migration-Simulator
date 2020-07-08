@@ -19,7 +19,7 @@ public class Point
         // The random number of food for each point is between 5 and 20
         // The random kangaroo limit of each point is between 5 and 12
         // The random number of link for each point is between 2 and 7
-       this(RAND.nextInt(1001), 5 + RAND.nextInt(16), 5 + RAND.nextInt(8), 2 + RAND.nextInt(6), new ArrayList<Kangaroo>(), new ArrayList<Integer>());
+       this(RAND.nextInt(1001), 5 + RAND.nextInt(16), 5 + RAND.nextInt(8), 2 + RAND.nextInt(6), null, new ArrayList<Integer>());
     }
     public Point(int id, int foodEnum, int maxKangarooCapacity, int linkLimit, ArrayList<Kangaroo> kangaroos, ArrayList<Integer> pointsID)
     {
@@ -35,8 +35,8 @@ public class Point
         // Assign the link limit
         this.linkLimit = linkLimit;
         
-        // If the kangaroos arrayList is empty
-        if(kangaroos.size() == 0)
+        // If the kangaroos arrayList is empty put random amount of kangaroos
+        if(kangaroos == null)
         {
             // Initial number of kangaroo is between 1 to 3/5 of the maximum number of kangaroo allowed
             int size = (this.maxKangarooCapacity > 1) ? 2 + RAND.nextInt(this.maxKangarooCapacity * 3/5) : this.maxKangarooCapacity;
@@ -51,7 +51,10 @@ public class Point
         // If the user set the kangaroos for the point
         else
         {
+            // Just assign the kangaroos arrayList
             this.kangaroos = kangaroos;
+
+            // Update the female count
             for(int i = 0; i < this.kangaroos.size(); i++)
                 if(this.kangaroos.get(i).getGender().equals("female"))
                     this.females++;
@@ -78,7 +81,7 @@ public class Point
     // Check if the user specified any ID for the connection (DONE)
     public boolean haveSpecifiedID()
     {
-        return this.pointIDSpecified.size() >= 0;
+        return this.pointIDSpecified.size() > 0;
     }
     // Check whether a connection has already been established with the point (DONE)
     public boolean containSpecifiedID(Point that)
@@ -148,11 +151,20 @@ public class Point
     }
     
     // Getter and setter for id (DONE)
-    public int getID() {return this.id;}
-    public void setID(int id) {this.id = id;}
+    public int getID() 
+    {
+        return this.id;
+    }
+    public void setID(int id) 
+    {
+        this.id = id;
+    }
     
     // Get the number of kangaroos in this point (DONE)
-    public int getPointCapacity() {return this.kangaroos.size();}
+    public int getKangarooCount() 
+    {
+        return this.kangaroos.size();
+    }
     
     // Check if the number of kangaroos already reach max capacity (DONE)
     public boolean isFull() 
@@ -173,10 +185,16 @@ public class Point
     }
 
     // Get the number of female at this point (DONE)
-    public int getFemales() {return this.females;}
+    public int getFemales() 
+    {
+        return this.females;
+    }
     
     // Check if this point is colonized (DONE)
-    public boolean isColonized() {return this.colonized;}
+    public boolean isColonized() 
+    {
+        return this.colonized;
+    }
     
     // Check if the number of link is full(DONE)
     public boolean linkIsFull() 
