@@ -1,6 +1,6 @@
 # _Kangaroo Migration Simulator_
 ## Description
-This project attempts to simulate the migration of Kangaroos.
+This project attempts to simulate the migration of Kangaroos
 ## Feature
 - Create a map based on user input
 - Randomly generate kangaroos
